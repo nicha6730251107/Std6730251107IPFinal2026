@@ -7,7 +7,7 @@ function request(method, path, body = null) {
     const req = http.request(
       {
         hostname: 'localhost',
-        port: 5000,
+        port: process.env.PORT || 3082,
         path,
         method,
         headers: {

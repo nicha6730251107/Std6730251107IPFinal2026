@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-// Default Backend Base URL (Works directly on Web and emulator/local network)
-const DEFAULT_API_BASE = 'http://localhost:5000';
+// Default Backend Base URL (Student Port 3082)
+const DEFAULT_API_BASE = 'http://localhost:3082';
 
 export default function App() {
   // Navigation / Auth State
