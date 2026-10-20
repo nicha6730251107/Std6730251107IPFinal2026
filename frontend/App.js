@@ -36,6 +36,9 @@ export default function App() {
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Phase 2: K-Means State
   const [clusters, setClusters] = useState([]);
   const [analyzingClusters, setAnalyzingClusters] = useState(false);
@@ -243,6 +246,15 @@ export default function App() {
     }
   };
 
+  const keyword = searchQuery.trim().toLowerCase();
+  const filteredEmployees = keyword
+    ? employees.filter(emp =>
+        [emp.name, emp.position, emp.status, String(emp.salary)].some(v =>
+          String(v).toLowerCase().includes(keyword)
+        )
+      )
+    : employees;
+
   // ==========================================
   // Render: Login Screen
   // ==========================================
@@ -448,7 +460,9 @@ export default function App() {
             <View>
               <Text style={styles.sectionTitle}>Employee Directory</Text>
               <Text style={styles.sectionSubtitle}>
-                Total: {employees.length} employee records
+                {keyword
+                  ? `Showing ${filteredEmployees.length} of ${employees.length} employees`
+                  : `Total: ${employees.length} employee records`}
               </Text>
             </View>
             <TouchableOpacity style={styles.refreshButton} onPress={fetchEmployees}>
@@ -456,15 +470,28 @@ export default function App() {
             </TouchableOpacity>
           </View>
 
+          <TextInput
+            style={[styles.input, styles.searchInput]}
+            placeholder="🔍 Search by name, position, status or salary"
+            placeholderTextColor="#6b7280"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            autoCapitalize="none"
+          />
+
           {loadingEmployees ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="small" color="#facc15" />
               <Text style={styles.loadingText}>Loading employee directory...</Text>
             </View>
-          ) : employees.length === 0 ? (
-            <Text style={styles.emptyText}>No employees found. Add one above!</Text>
+          ) : filteredEmployees.length === 0 ? (
+            <Text style={styles.emptyText}>
+              {keyword
+                ? `No employees match "${searchQuery.trim()}".`
+                : 'No employees found. Add one above!'}
+            </Text>
           ) : (
-            employees.map((item) => (
+            filteredEmployees.map((item) => (
               <View key={item.id} style={styles.employeeCard}>
                 <View style={styles.employeeInfo}>
                   <View style={styles.employeeHeaderRow}>
@@ -658,6 +685,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: C.text
   },
+  searchInput: { marginBottom: 14, borderColor: C.yellow },
   primaryButton: {
     backgroundColor: C.red,
     borderRadius: 10,

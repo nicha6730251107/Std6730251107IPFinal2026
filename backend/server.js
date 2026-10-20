@@ -92,6 +92,24 @@ try {
         if (t2.length > 0) {
           tableName = 'employees';
           useDb = true;
+        } else {
+          // No table yet: create it and seed with the default mock employees
+          await conn.query(
+            `CREATE TABLE \`${tableName}\` (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              name VARCHAR(255) NOT NULL,
+              position VARCHAR(255) NOT NULL,
+              status VARCHAR(20) NOT NULL DEFAULT 'Active',
+              salary DECIMAL(12,2) NOT NULL
+            )`
+          );
+          for (const e of employees) {
+            await conn.query(
+              `INSERT INTO \`${tableName}\` (name, position, status, salary) VALUES (?, ?, ?, ?)`,
+              [e.name, e.position, e.status, e.salary]
+            );
+          }
+          useDb = true;
         }
       }
       conn.release();
