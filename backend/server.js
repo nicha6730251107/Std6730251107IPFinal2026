@@ -62,13 +62,15 @@ let pool = null;
 let useDb = false;
 let tableName = 'NichaChom_251107';
 
+// Only attempt MySQL when configured via .env; otherwise stay fully in-memory
 try {
+  if (!process.env.DB_HOST) throw new Error('DB_HOST not set');
   const mysql = require('mysql2/promise');
   pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'std6730251107',
-    password: process.env.DB_PASSWORD || 'z9Y!Ln0J',
-    database: process.env.DB_NAME || 'ip_std6730251107',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     port: Number(process.env.DB_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 5,
@@ -95,12 +97,13 @@ try {
       conn.release();
       console.log(`Database storage: ${useDb ? 'Connected to table ' + tableName : 'Using in-memory array'}`);
     } catch (err) {
-      console.log('⚠️ MySQL connection unavailable, running in in-memory mode:', err.message);
+      console.log('⚠️ MySQL connection unavailable, running in in-memory mode:', err.code || '', err.message);
       useDb = false;
     }
   })();
 } catch (e) {
   useDb = false;
+  console.log('Database storage: Using in-memory array');
 }
 
 // ==========================================
@@ -172,6 +175,7 @@ app.post('/api/employees', async (req, res) => {
     salary: numericSalary
   };
 
+  let savedToDb = false;
   if (useDb && pool) {
     try {
       const [result] = await pool.query(
@@ -181,12 +185,13 @@ app.post('/api/employees', async (req, res) => {
       if (result && result.insertId) {
         newEmployee.id = String(result.insertId);
       }
+      savedToDb = true;
     } catch (err) {
       console.error('DB insert error, saving to memory:', err.message);
     }
   }
 
-  employees.push(newEmployee);
+  if (!savedToDb) employees.push(newEmployee);
 
   return res.status(201).json({
     success: true,

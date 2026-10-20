@@ -249,7 +249,7 @@ export default function App() {
   if (!token) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.centerContainer}
@@ -267,6 +267,7 @@ export default function App() {
               <Text style={styles.label}>Username</Text>
               <TextInput
                 style={styles.input}
+                placeholderTextColor="#6b7280"
                 placeholder="Enter username (e.g. admin)"
                 value={username}
                 onChangeText={setUsername}
@@ -278,6 +279,7 @@ export default function App() {
               <Text style={styles.label}>Password</Text>
               <TextInput
                 style={styles.input}
+                placeholderTextColor="#6b7280"
                 placeholder="Enter password (e.g. password123)"
                 value={password}
                 onChangeText={setPassword}
@@ -300,6 +302,7 @@ export default function App() {
                   <Text style={styles.helperText}>API Endpoint:</Text>
                   <TextInput
                     style={[styles.input, { fontSize: 13, paddingVertical: 6 }]}
+                    placeholderTextColor="#6b7280"
                     value={apiBaseUrl}
                     onChangeText={setApiBaseUrl}
                     placeholder="http://localhost:5000"
@@ -318,7 +321,7 @@ export default function App() {
   // ==========================================
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* App Bar / Header */}
         <View style={styles.dashboardHeader}>
@@ -352,7 +355,7 @@ export default function App() {
           {/* Loading Indicator */}
           {analyzingClusters && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#2563eb" />
+              <ActivityIndicator size="large" color="#facc15" />
               <Text style={styles.loadingText}>Computing 1D K-Means clusters on server...</Text>
             </View>
           )}
@@ -397,6 +400,7 @@ export default function App() {
               <Text style={styles.label}>Full Name *</Text>
               <TextInput
                 style={styles.input}
+                placeholderTextColor="#6b7280"
                 placeholder="e.g. Alice Wonderland"
                 value={name}
                 onChangeText={setName}
@@ -407,6 +411,7 @@ export default function App() {
               <Text style={styles.label}>Position *</Text>
               <TextInput
                 style={styles.input}
+                placeholderTextColor="#6b7280"
                 placeholder="e.g. Senior Frontend Engineer"
                 value={position}
                 onChangeText={setPosition}
@@ -417,6 +422,7 @@ export default function App() {
               <Text style={styles.label}>Monthly Salary (THB) *</Text>
               <TextInput
                 style={styles.input}
+                placeholderTextColor="#6b7280"
                 placeholder="e.g. 55000"
                 keyboardType="numeric"
                 value={salary}
@@ -452,7 +458,7 @@ export default function App() {
 
           {loadingEmployees ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="small" color="#2563eb" />
+              <ActivityIndicator size="small" color="#facc15" />
               <Text style={styles.loadingText}>Loading employee directory...</Text>
             </View>
           ) : employees.length === 0 ? (
@@ -515,106 +521,82 @@ export default function App() {
   );
 }
 
+// Theme: Red / Black / Gray / Yellow
+const C = {
+  bg: '#0d0d0d',
+  surface: '#1a1a1a',
+  surfaceAlt: '#242424',
+  border: '#333333',
+  text: '#f5f5f5',
+  muted: '#9ca3af',
+  red: '#dc2626',
+  redDark: '#7f1d1d',
+  yellow: '#facc15',
+  yellowDark: '#422006'
+};
+
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f1f5f9'
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16
-  },
-  scrollContent: {
-    padding: 16,
-    maxWidth: 960,
-    width: '100%',
-    alignSelf: 'center'
-  },
+  safeArea: { flex: 1, backgroundColor: C.bg },
+  centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
+  scrollContent: { padding: 16, maxWidth: 960, width: '100%', alignSelf: 'center' },
   loginCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: C.surface,
     borderRadius: 16,
     padding: 28,
     width: '100%',
     maxWidth: 420,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4
+    borderWidth: 1,
+    borderColor: C.border,
+    borderTopWidth: 4,
+    borderTopColor: C.red,
+    shadowColor: C.red,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8
   },
-  loginHeader: {
-    alignItems: 'center',
-    marginBottom: 24
-  },
+  loginHeader: { alignItems: 'center', marginBottom: 24 },
   badgeContainer: {
-    backgroundColor: '#dbeafe',
+    backgroundColor: C.yellow,
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
     marginBottom: 12
   },
-  badgeText: {
-    color: '#1e40af',
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#0f172a',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#64748b',
-    textAlign: 'center'
-  },
+  badgeText: { color: '#000000', fontSize: 12, fontWeight: '800' },
+  title: { fontSize: 22, fontWeight: '800', color: C.text, textAlign: 'center', marginBottom: 6 },
+  subtitle: { fontSize: 14, color: C.muted, textAlign: 'center' },
   dashboardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: C.surface,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    elevation: 2
+    borderWidth: 1,
+    borderColor: C.border,
+    borderLeftWidth: 6,
+    borderLeftColor: C.red
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#0f172a'
-  },
-  headerSubtitle: {
-    fontSize: 13,
-    color: '#64748b',
-    marginTop: 2
-  },
+  headerTitle: { fontSize: 20, fontWeight: '800', color: C.text },
+  headerSubtitle: { fontSize: 13, color: C.yellow, marginTop: 2 },
   logoutButton: {
-    backgroundColor: '#fecdd3',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: C.red,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 8
   },
-  logoutButtonText: {
-    color: '#be123c',
-    fontSize: 13,
-    fontWeight: '700'
-  },
+  logoutButtonText: { color: C.red, fontSize: 13, fontWeight: '700' },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: C.surface,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2
+    borderWidth: 1,
+    borderColor: C.border
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -624,39 +606,24 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#0f172a'
-  },
-  sectionSubtitle: {
-    fontSize: 13,
-    color: '#64748b',
-    marginTop: 2
-  },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: C.text },
+  sectionSubtitle: { fontSize: 13, color: C.muted, marginTop: 2 },
   analyticsButton: {
-    backgroundColor: '#2563eb',
+    backgroundColor: C.yellow,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 10
   },
-  analyticsButtonText: {
-    color: '#ffffff',
-    fontWeight: '700',
-    fontSize: 14
-  },
-  clusterGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginTop: 12
-  },
+  analyticsButtonText: { color: '#000000', fontWeight: '800', fontSize: 14 },
+  clusterGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },
   clusterCard: {
     flex: 1,
     minWidth: 160,
-    backgroundColor: '#f8fafc',
+    backgroundColor: C.surfaceAlt,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: C.border,
+    borderTopWidth: 3,
+    borderTopColor: C.yellow,
     borderRadius: 14,
     padding: 16
   },
@@ -666,212 +633,111 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8
   },
-  clusterTierName: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#1e3a8a'
-  },
+  clusterTierName: { fontSize: 16, fontWeight: '800', color: C.yellow },
   tierPill: {
-    backgroundColor: '#e0f2fe',
+    backgroundColor: C.redDark,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 8
   },
-  tierPillText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#0369a1'
-  },
-  centroidLabel: {
-    fontSize: 12,
-    color: '#64748b',
-    marginBottom: 2
-  },
-  centroidValue: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#0f172a'
-  },
-  clusterSummaryHint: {
-    fontSize: 11,
-    color: '#94a3b8',
-    marginTop: 4
-  },
-  formGrid: {
-    gap: 12,
-    marginBottom: 16
-  },
-  formCol: {
-    flex: 1
-  },
-  inputGroup: {
-    marginBottom: 14
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#334155',
-    marginBottom: 6
-  },
+  tierPillText: { fontSize: 11, fontWeight: '700', color: '#fecaca' },
+  centroidLabel: { fontSize: 12, color: C.muted, marginBottom: 2 },
+  centroidValue: { fontSize: 20, fontWeight: '800', color: C.text },
+  clusterSummaryHint: { fontSize: 11, color: '#6b7280', marginTop: 4 },
+  formGrid: { gap: 12, marginBottom: 16 },
+  formCol: { flex: 1 },
+  inputGroup: { marginBottom: 14 },
+  label: { fontSize: 13, fontWeight: '600', color: '#d1d5db', marginBottom: 6 },
   input: {
-    backgroundColor: '#f8fafc',
+    backgroundColor: C.bg,
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: '#4b5563',
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontSize: 14,
-    color: '#0f172a'
+    color: C.text
   },
   primaryButton: {
-    backgroundColor: '#2563eb',
+    backgroundColor: C.red,
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 6
   },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontSize: 15,
-    fontWeight: '700'
-  },
-  buttonDisabled: {
-    opacity: 0.6
-  },
+  primaryButtonText: { color: '#ffffff', fontSize: 15, fontWeight: '700' },
+  buttonDisabled: { opacity: 0.5 },
   refreshButton: {
-    backgroundColor: '#f1f5f9',
+    backgroundColor: C.surfaceAlt,
+    borderWidth: 1,
+    borderColor: C.border,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8
   },
-  refreshButtonText: {
-    color: '#475569',
-    fontSize: 12,
-    fontWeight: '600'
-  },
+  refreshButtonText: { color: '#d1d5db', fontSize: 12, fontWeight: '600' },
   employeeCard: {
-    backgroundColor: '#f8fafc',
+    backgroundColor: C.surfaceAlt,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: C.border,
+    borderLeftWidth: 4,
+    borderLeftColor: C.red,
     padding: 16,
     marginBottom: 12
   },
-  employeeInfo: {
-    marginBottom: 12
-  },
+  employeeInfo: { marginBottom: 12 },
   employeeHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4
   },
-  employeeName: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0f172a'
-  },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 12
-  },
-  statusActive: {
-    backgroundColor: '#dcfce7'
-  },
-  statusLeave: {
-    backgroundColor: '#fef3c7'
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  statusTextActive: {
-    color: '#15803d'
-  },
-  statusTextLeave: {
-    color: '#b45309'
-  },
-  employeePosition: {
-    fontSize: 13,
-    color: '#475569',
-    marginBottom: 4
-  },
-  employeeSalary: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0369a1'
-  },
+  employeeName: { fontSize: 16, fontWeight: '700', color: C.text },
+  statusBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12 },
+  statusActive: { backgroundColor: C.yellow },
+  statusLeave: { backgroundColor: '#374151' },
+  statusText: { fontSize: 12, fontWeight: '700' },
+  statusTextActive: { color: '#000000' },
+  statusTextLeave: { color: '#d1d5db' },
+  employeePosition: { fontSize: 13, color: C.muted, marginBottom: 4 },
+  employeeSalary: { fontSize: 14, fontWeight: '700', color: C.yellow },
   actionRow: {
     flexDirection: 'row',
     gap: 8,
     justifyContent: 'flex-end',
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
+    borderTopColor: C.border,
     paddingTop: 10
   },
   toggleButton: {
-    backgroundColor: '#e0e7ff',
+    backgroundColor: '#374151',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8
   },
-  toggleButtonText: {
-    color: '#3730a3',
-    fontSize: 12,
-    fontWeight: '600'
-  },
+  toggleButtonText: { color: '#f3f4f6', fontSize: 12, fontWeight: '600' },
   deleteButton: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: C.redDark,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8
   },
-  deleteButtonText: {
-    color: '#dc2626',
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  loadingContainer: {
-    padding: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8
-  },
-  loadingText: {
-    fontSize: 13,
-    color: '#64748b'
-  },
-  emptyText: {
-    textAlign: 'center',
-    color: '#94a3b8',
-    padding: 20
-  },
+  deleteButtonText: { color: '#fecaca', fontSize: 12, fontWeight: '600' },
+  loadingContainer: { padding: 24, alignItems: 'center', justifyContent: 'center', gap: 8 },
+  loadingText: { fontSize: 13, color: C.muted },
+  emptyText: { textAlign: 'center', color: '#6b7280', padding: 20 },
   errorBanner: {
-    backgroundColor: '#fee2e2',
-    color: '#b91c1c',
+    backgroundColor: C.redDark,
+    color: '#fecaca',
     padding: 10,
     borderRadius: 8,
     marginBottom: 12,
     fontSize: 13,
     fontWeight: '500'
   },
-  apiConfigBox: {
-    marginTop: 18,
-    borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
-    paddingTop: 12
-  },
-  apiConfigToggle: {
-    fontSize: 12,
-    color: '#64748b',
-    textAlign: 'center',
-    fontWeight: '500'
-  },
-  helperText: {
-    fontSize: 12,
-    color: '#64748b',
-    marginBottom: 4
-  }
+  apiConfigBox: { marginTop: 18, borderTopWidth: 1, borderTopColor: C.border, paddingTop: 12 },
+  apiConfigToggle: { fontSize: 12, color: C.yellow, textAlign: 'center', fontWeight: '500' },
+  helperText: { fontSize: 12, color: C.muted, marginBottom: 4 }
 });
